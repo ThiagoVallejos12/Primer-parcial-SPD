@@ -10,22 +10,34 @@ Division: J
 
 ## Descripción del proyecto
 
-Este proyecto es un sistema que simula un ascensor. 
-En el proyecto se utiliza: 
+Este proyecto es un sistema que simula un ascensor.
+
+En el proyecto se utiliza:
+
 -1 Placa arduino.
+
 -1 Breadboard.
+
 -1 Display 7 segmentos.
+
 -3 Botones.
+
 -2 Leds.
+
 -10 Resistencias.
 
 ## Como funciona
 
 Se informa constantemente mediante el display 7 segmentos, en que piso se encuentra el ascensor(Piso mas bajo: 0. Piso mas alto: 9).
-Hay 3 botones, uno para subir, otro para bajar y otro para frenar el ascensor.
+
+Hay 3 botones: Uno para subir, otro para bajar y otro para frenar el ascensor.
+
 Al pulsar el boton de subir, subira un piso. Lo mismo con el de bajar.
+
 Al pulsar el boton de frenar, el ascensor hara una parada de emergencia, sin importar si esta en movimiento o no.
+
 En caso de que el ascensor este en movimiento, se encendera el led verde.
+
 En caso de que el ascensor este frenado, se encendera el led rojo.
 
 ## Defines, declaración de funciones y declaración de variables.
@@ -63,8 +75,10 @@ pinMode(botonFrenar, INPUT_PULLUP);
 ```
 
 ## Código principal
-Se iguala la variable "contadorboton" a la función "contarpulsacionboton", que recibe como parámetro: botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde. 
+Se iguala la variable "contadorboton" a la función "contarpulsacionboton", que recibe como parámetro: botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde.
+
 Esta funcion retorna un dato de tipo entero, el cual representa el piso en el que se encuentra el ascensor.
+
 Luego se ejecuta la función "encenderDisplay7". La cual recibe por parametro los valores de los 7 segmentos, y la variable "contadorboton"
 ```c++
 contadorboton = contarpulsacionboton(botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde, PUNT);
@@ -75,8 +89,11 @@ encenderDisplay7(A,B,C,D,E,F,G,contadorboton);
 ### *"encenderDisplay7"*
 
 Esta funcián recibe por parámetros los datos de los 7 segmentos del display, y un numero que va a ser el que el segmento tiene que representar.
+
 Dependiendo del numero que se reciba, va a ser el que se va a mostrar en el display.
+
 No retorna nada.
+
 ```c++
 void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, int numero)
 {
@@ -187,10 +204,15 @@ void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, in
 
 ### *"detectarbotonfrenar"*
 Esta función recibe por parámetros: botonfrenado, leduno, leddos, punto.
+
 Lo que hace es verificar si el boton de frenado se pulsa. En caso de ser pulsado, se ejecuta un while. De esta manera se logra que el ascensor frene.
+
 Dentro del while, se informa una vez por consola que el ascensor esta detenido. Se apaga el led que indica que el ascensor esta en movimiento, y se enciende el que indica
+
 que el ascensor esta detenido. Tambien, en el display se enciende el punto.
+
 Este while va a dejar de ejecutarse unicamente cuando el boton vuelva a ser pulsado.
+
 ```c++
 void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
 {
@@ -226,12 +248,19 @@ void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
 
 ### *"contarpulsacionboton"*
 Como mencioné anteriormente, esta función recibe por parámetros: botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde. y retorna un dato de tipo entero,
+
 que va a representar al piso en el que se encuentra el ascensor.
+
 Esta función evalúa en todo momento si, el boton de subir o el de bajar es pulsado.
+
 En caso de que se pulse el boton de subir o bajar, se ejecuta un for, el cual, cada 100ms, reutilizara la funcion creada anteriormente *"detectarbotonfrenar"* 
+
 con el fin de detectar si el boton de frenar es presionado mientras el ascensor sube o baja de nivel. El for va a ejecutarse mientras que el contador i, 
+
 el cual inicia en 0, y suma 100 por cada 100ms que hay de delay, se mantenga por debajo de los 3000(3 segundos).
+
 Luego de esto, dependiendo si se pulso el boton de subir, o de bajar, a la variable *contador* se le va a sumar 1 o restar 1.
+
 Finalmente, la funcion retorna el valor de la variable *contador*.
 ```c++
 int contarpulsacionboton(int botonup,int botondown,int botonstop, int contador, int led1, int led2, int punt)
