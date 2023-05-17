@@ -29,7 +29,7 @@ En caso de que el ascensor este en movimiento, se encendera el led verde.
 En caso de que el ascensor este frenado, se encendera el led rojo.
 
 ## Defines, declaración de funciones y declaración de variables.
-``c++
+```c++
 #define	A 2
 #define B 3
 #define C 4
@@ -48,7 +48,7 @@ void detectarbotonfrenar(int botonfrenado, int led1, int led2, int punto);
 int contarpulsacionboton(int botonup,int botondown, int botonstop, int contador, int punt);
 int estadoboton;
 int contadorboton = 0;
-``
+```
 
 ## Setup
 ``c++
