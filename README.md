@@ -1,8 +1,8 @@
 # _Primer parcial SPD_
 
-**Nombre y apellido: Thiago Vallejos
+**Nombre y apellido: Thiago Vallejos**
 
-Division: J**
+**Division: J**
 
 # Ascensor
 
