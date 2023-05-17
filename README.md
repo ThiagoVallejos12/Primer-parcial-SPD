@@ -306,4 +306,5 @@ int contarpulsacionboton(int botonup,int botondown,int botonstop, int contador, 
 ```
 
 ## Proyecto en tinkercad
-[Primer parcial](https://www.tinkercad.com/things/4P5avjdLAza "title" target="_blank")
+[Primer parcial](https://www.tinkercad.com/things/4P5avjdLAza)
+
