@@ -305,5 +305,5 @@ int contarpulsacionboton(int botonup,int botondown,int botonstop, int contador, 
 }
 ```
 
-## :eight_pointed_black_star: Proyecto en tinkercad
-[Primer parcial](https://www.tinkercad.com/things/4P5avjdLAza)
+## Proyecto en tinkercad
+[Primer parcial](https://www.tinkercad.com/things/4P5avjdLAza target="_blank")
