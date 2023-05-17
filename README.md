@@ -51,7 +51,7 @@ int contadorboton = 0;
 ```
 
 ## Setup
-``c++
+```c++
 for(int i = 2; i<12; i++)
   {
   	pinMode(i, OUTPUT);
@@ -60,16 +60,16 @@ for(int i = 2; i<12; i++)
   pinMode(botonSubir, INPUT_PULLUP);
   pinMode(botonBajar, INPUT_PULLUP);
   pinMode(botonFrenar, INPUT_PULLUP);
-``
+```
 
 ## Código principal
 Se iguala la variable "contadorboton" a la función "contarpulsacionboton", que recibe como parámetro: botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde. 
 Esta funcion retorna un dato de tipo entero, el cual representa el piso en el que se encuentra el ascensor.
 Luego se ejecuta la función "encenderDisplay7". La cual recibe por parametro los valores de los 7 segmentos, y la variable "contadorboton"
-``c++
+```c++
 contadorboton = contarpulsacionboton(botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde, PUNT);
 encenderDisplay7(A,B,C,D,E,F,G,contadorboton);
-``
+```
 
 ## Codigo de funciones.
 ### "encenderDisplay7"
@@ -77,7 +77,7 @@ encenderDisplay7(A,B,C,D,E,F,G,contadorboton);
 Esta funcián recibe por parámetros los datos de los 7 segmentos del display, y un numero que va a ser el que el segmento tiene que representar.
 Dependiendo del numero que se reciba, va a ser el que se va a mostrar en el display.
 No retorna nada.
-``c++
+```c++
 void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, int numero)
 {
   switch (numero)
@@ -183,11 +183,11 @@ void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, in
     break;
   }
 }
-``
+```
 
 ### "detectarbotonfrenar"
 
-``c++
+```c++
 void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
 {
   int flagMensaje = 1;
@@ -218,4 +218,4 @@ void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
   }
   ultimoestadobotonstop = estadobotonstop;
 }
-``
+```
