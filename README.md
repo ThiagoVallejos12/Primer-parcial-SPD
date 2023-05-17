@@ -1,4 +1,4 @@
-# Primer-parcial-SPD
+# Primer parcial SPD
 
 Nombre y apellido: Thiago Vallejos
 
