@@ -1,8 +1,8 @@
 # _Primer parcial SPD_
 
-**Nombre y apellido: Thiago Vallejos**
+Nombre y apellido: Thiago Vallejos
 
-**Division: J**
+Division: J
 
 # Ascensor
 
@@ -56,10 +56,10 @@ for(int i = 2; i<12; i++)
   {
   	pinMode(i, OUTPUT);
   }
-  Serial.begin(9600);
-  pinMode(botonSubir, INPUT_PULLUP);
-  pinMode(botonBajar, INPUT_PULLUP);
-  pinMode(botonFrenar, INPUT_PULLUP);
+Serial.begin(9600);
+pinMode(botonSubir, INPUT_PULLUP);
+pinMode(botonBajar, INPUT_PULLUP);
+pinMode(botonFrenar, INPUT_PULLUP);
 ```
 
 ## Código principal
@@ -72,7 +72,7 @@ encenderDisplay7(A,B,C,D,E,F,G,contadorboton);
 ```
 
 ## Codigo de funciones.
-### "encenderDisplay7"
+### *"encenderDisplay7"*
 
 Esta funcián recibe por parámetros los datos de los 7 segmentos del display, y un numero que va a ser el que el segmento tiene que representar.
 Dependiendo del numero que se reciba, va a ser el que se va a mostrar en el display.
@@ -110,7 +110,7 @@ void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, in
     	digitalWrite(dG, 0);
     break;
     case 2:
-      	digitalWrite(dA, 1);
+      digitalWrite(dA, 1);
     	digitalWrite(dB, 1);
     	digitalWrite(dC, 0);
     	digitalWrite(dD, 1);
@@ -119,7 +119,7 @@ void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, in
     	digitalWrite(dG, 1);
     break;
     case 3:
-      	digitalWrite(dA, 1);
+      digitalWrite(dA, 1);
     	digitalWrite(dB, 1);
     	digitalWrite(dC, 1);
     	digitalWrite(dD, 1);
@@ -128,7 +128,7 @@ void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, in
     	digitalWrite(dG, 1);
     break;
     case 4:
-      	digitalWrite(dA, 0);
+      digitalWrite(dA, 0);
     	digitalWrite(dB, 1);
     	digitalWrite(dC, 1);
     	digitalWrite(dD, 0);
@@ -185,8 +185,12 @@ void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, in
 }
 ```
 
-### "detectarbotonfrenar"
-
+### *"detectarbotonfrenar"*
+Esta función recibe por parámetros: botonfrenado, leduno, leddos, punto.
+Lo que hace es verificar si el boton de frenado se pulsa. En caso de ser pulsado, se ejecuta un while. De esta manera se logra que el ascensor frene.
+Dentro del while, se informa una vez por consola que el ascensor esta detenido. Se apaga el led que indica que el ascensor esta en movimiento, y se enciende el que indica
+que el ascensor esta detenido. Tambien, en el display se enciende el punto.
+Este while va a dejar de ejecutarse unicamente cuando el boton vuelva a ser pulsado.
 ```c++
 void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
 {
@@ -219,3 +223,58 @@ void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
   ultimoestadobotonstop = estadobotonstop;
 }
 ```
+
+### *"contarpulsacionboton"*
+Como mencioné anteriormente, esta función recibe por parámetros: botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde. y retorna un dato de tipo entero,
+que va a representar al piso en el que se encuentra el ascensor.
+Esta función evalúa en todo momento si, el boton de subir o el de bajar es pulsado.
+En caso de que se pulse el boton de subir o bajar, se ejecuta un for, el cual, cada 100ms, reutilizara la funcion creada anteriormente *"detectarbotonfrenar"* 
+con el fin de detectar si el boton de frenar es presionado mientras el ascensor sube o baja de nivel. El for va a ejecutarse mientras que el contador i, 
+el cual inicia en 0, y suma 100 por cada 100ms que hay de delay, se mantenga por debajo de los 3000(3 segundos).
+Luego de esto, dependiendo si se pulso el boton de subir, o de bajar, a la variable *contador* se le va a sumar 1 o restar 1.
+Finalmente, la funcion retorna el valor de la variable *contador*.
+```c++
+int contarpulsacionboton(int botonup,int botondown,int botonstop, int contador, int led1, int led2, int punt)
+{
+  int ultimoestadobotonup;
+  int ultimoestadobotondown;
+  int estadobotonup;
+  int estadobotondown;
+  Serial.println(contador);
+  estadobotonup = digitalRead(botonup);
+  estadobotondown = digitalRead(botondown);
+  detectarbotonfrenar(botonstop, led1, led2, punt);
+  if (estadobotonup != ultimoestadobotonup || estadobotondown != ultimoestadobotondown)
+  {
+    if (estadobotonup == LOW && contador < 9)
+    {
+      for (int i = 0; i <= 2900; i += 100)
+      {
+        digitalWrite(led1, 1);
+        detectarbotonfrenar(botonstop, led1, led2, punt);
+        delay(100);
+      }
+      contador++;
+      digitalWrite(led1, 0);
+    }
+    if (estadobotondown == LOW && contador > 0)
+    {   
+      for (int i = 0; i <= 2900; i += 100)
+      {
+        digitalWrite(led1, 1);
+        detectarbotonfrenar(botonstop, led1, led2, punt);
+        delay(100);
+      }
+      contador--;
+      digitalWrite(led1, 0);
+    }
+    delay(100);
+  }
+  ultimoestadobotonup = estadobotonup;
+  ultimoestadobotondown = estadobotondown;
+  return contador;
+}
+```
+
+## :eight_pointed_black_star: Proyecto en tinkercad
+[Primer parcial](https://www.tinkercad.com/things/4P5avjdLAza)
