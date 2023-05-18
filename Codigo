@@ -1,0 +1,215 @@
+// C++ code
+//
+#define	A 2
+#define B 3
+#define C 4
+#define D 5
+#define E 6
+#define F 7
+#define G 8
+#define PUNT 9
+#define ledRojo 10
+#define ledVerde 11
+#define botonSubir A0
+#define botonFrenar A1
+#define botonBajar A2
+void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, int numero);
+void detectarbotonfrenar(int botonfrenado, int led1, int led2, int punto);
+int contarpulsacionboton(int botonup,int botondown, int botonstop, int contador, int punt);
+int estadoboton;
+int contadorboton = 0;
+void setup()
+{
+  for(int i = 2; i<12; i++)
+  {
+  	pinMode(i, OUTPUT);
+  }
+  Serial.begin(9600);
+  pinMode(botonSubir, INPUT_PULLUP);
+  pinMode(botonBajar, INPUT_PULLUP);
+  pinMode(botonFrenar, INPUT_PULLUP);
+}
+
+void loop()
+{
+  contadorboton = contarpulsacionboton(botonSubir, botonBajar, botonFrenar, contadorboton, ledRojo, ledVerde, PUNT);
+  encenderDisplay7(A,B,C,D,E,F,G,contadorboton);
+}
+
+void encenderDisplay7(int dA, int dB, int dC, int dD, int dE, int dF, int dG, int numero)
+{
+  switch (numero)
+  {
+    case -1:
+    	digitalWrite(dA, 0);
+    	digitalWrite(dB, 0);
+    	digitalWrite(dC, 0);
+    	digitalWrite(dD, 0);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 0);
+    	digitalWrite(dG, 1);
+    break;
+    case 0:
+    	digitalWrite(dA, 1);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 1);
+    	digitalWrite(dE, 1);
+    	digitalWrite(dF, 1);
+    	digitalWrite(dG, 0);
+    break;
+    case 1:
+    	digitalWrite(dA, 0);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 0);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 0);
+    	digitalWrite(dG, 0);
+    break;
+    case 2:
+      	digitalWrite(dA, 1);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 0);
+    	digitalWrite(dD, 1);
+    	digitalWrite(dE, 1);
+    	digitalWrite(dF, 0);
+    	digitalWrite(dG, 1);
+    break;
+    case 3:
+      	digitalWrite(dA, 1);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 1);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 0);
+    	digitalWrite(dG, 1);
+    break;
+    case 4:
+      	digitalWrite(dA, 0);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 0);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 1);
+    	digitalWrite(dG, 1);
+    break;
+    case 5:
+    	digitalWrite(dA, 1);
+    	digitalWrite(dB, 0);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 1);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 1);
+    	digitalWrite(dG, 1);
+    break;
+    case 6:
+    	digitalWrite(dA, 0);
+    	digitalWrite(dB, 0);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 1);
+    	digitalWrite(dE, 1);
+    	digitalWrite(dF, 1);
+    	digitalWrite(dG, 1);
+    break;
+    case 7:
+    	digitalWrite(dA, 1);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 0);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 0);
+    	digitalWrite(dG, 0);
+    break;
+    case 8:
+    	digitalWrite(dA, 1);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 1);
+    	digitalWrite(dE, 1);
+    	digitalWrite(dF, 1);
+    	digitalWrite(dG, 1);
+    break;
+    case 9:
+    	digitalWrite(dA, 1);
+    	digitalWrite(dB, 1);
+    	digitalWrite(dC, 1);
+    	digitalWrite(dD, 0);
+    	digitalWrite(dE, 0);
+    	digitalWrite(dF, 1);
+    	digitalWrite(dG, 1);
+    break;
+  }
+}
+
+void detectarbotonfrenar(int botonfrenado, int leduno, int leddos, int punto)
+{
+  int flagMensaje = 1;
+  int ultimoestadobotonstop;
+  int estadobotonstop;
+  int flagbotonstop;
+  estadobotonstop = digitalRead(botonfrenado);
+  if (estadobotonstop != ultimoestadobotonstop)
+  {
+    while (estadobotonstop == LOW)
+    {
+      if (flagMensaje == 1)
+      {
+        Serial.println("MONTACARGAS DETENIDO");
+        flagMensaje = 0;
+      }
+      digitalWrite(leduno, 0);
+      digitalWrite(punto, 1);
+      digitalWrite(leddos, 1);
+      delay(100);
+      flagbotonstop = digitalRead(botonfrenado);
+      if (flagbotonstop == LOW)
+      {
+        break;
+      }
+    }
+    digitalWrite(leddos, 0);
+  }
+  ultimoestadobotonstop = estadobotonstop;
+}
+
+int contarpulsacionboton(int botonup,int botondown,int botonstop, int contador, int led1, int led2, int punt)
+{
+  int ultimoestadobotonup;
+  int ultimoestadobotondown;
+  int estadobotonup;
+  int estadobotondown;
+  Serial.println(contador);
+  estadobotonup = digitalRead(botonup);
+  estadobotondown = digitalRead(botondown);
+  detectarbotonfrenar(botonstop, led1, led2, punt);
+  if (estadobotonup != ultimoestadobotonup || estadobotondown != ultimoestadobotondown)
+  {
+    if (estadobotonup == LOW && contador < 9)
+    {
+      for (int i = 0; i <= 2900; i += 100)
+      {
+        digitalWrite(led1, 1);
+        detectarbotonfrenar(botonstop, led1, led2, punt);
+        delay(100);
+      }
+      contador++;
+      digitalWrite(led1, 0);
+    }
+    if (estadobotondown == LOW && contador > 0)
+    {   
+      for (int i = 0; i <= 2900; i += 100)
+      {
+        digitalWrite(led1, 1);
+        detectarbotonfrenar(botonstop, led1, led2, punt);
+        delay(100);
+      }
+      contador--;
+      digitalWrite(led1, 0);
+    }
+    delay(100);
+  }
+  ultimoestadobotonup = estadobotonup;
+  ultimoestadobotondown = estadobotondown;
+  return contador;
+}
